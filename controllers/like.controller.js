@@ -1,33 +1,22 @@
 const Like = require('../model/likeModel.js')
 
 exports.likeUpdate = async (req,res) =>{
-    // const {likeCount} = req.body
-
+       
     try {
-    //         const updateLike = Like.findOneAndUpdate(likeCount)
-    //   res.json(updateLike);
-          
-        // } else {
-        //     const newLike = new Like({counter})
-        //     await newLike.save();
-        //     res.status(201).json({message: 'Liked Succesfully'})
-        // }
-        const updatedCounter = await Like.findOneAndUpdate(
-            {}, // Empty query to update the single counter document
-            { $inc: { likeCount: 1 } },
-            { new: true }
-          );
-      
-          if (!updatedCounter) {
-            return res.status(500).json({ message: 'Error updating counter' });
-          }
-      
-          res.json(updatedCounter);
-      
+        const {postId} = req.body
+        const like = await Like.findById(postId)
 
+        if(like){
+          return res.status(400).json({message: "you already Liked"})
+        }else{
+         const newLike = new Like(postId)
+         await newLike.save()
+         res.status(200).json({message: "Liked succesfully"})
+        }
+     
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Server Error'})
+        res.status(500).json({message: 'Error liking'})
     }
 }
 

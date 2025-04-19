@@ -2,8 +2,7 @@ const mongoose = require('mongoose')
 
 const likeSchema = new mongoose.Schema({
     likeCount: {
-        type: Number,
-        default: 0
+       postId: mongoose.Schema.Types.ObjectId
     }
 }, {timestamps: true})
 
